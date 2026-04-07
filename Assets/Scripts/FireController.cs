@@ -20,19 +20,13 @@ public class FireController : MonoBehaviour
         if (fireParticles == null)
         {
             fireParticles = GetComponent<ParticleSystem>();
-            Debug.LogWarning($"[{name}] FireParticles was not assigned, using local ParticleSystem.");
         }
 
-        if (fireParticles == null)
-        {
-            Debug.LogError($"[{name}] ❌ No ParticleSystem found!");
-            return;
-        }
+        
 
         currentIntensity = maxIntensity;
         emission = fireParticles.emission;
 
-        Debug.Log($"[{name}] 🔥 Fire Initialized with intensity: {currentIntensity}");
     }
 
     void Update()
@@ -42,7 +36,6 @@ public class FireController : MonoBehaviour
         if (isBeingSprayed)
         {
             currentIntensity -= extinguishRate * Time.deltaTime;
-            Debug.Log($"[{name}] 💧 Being sprayed. Intensity: {currentIntensity:F2}");
         }
         else
         {
@@ -66,7 +59,6 @@ public class FireController : MonoBehaviour
         if (!isExtinguished)
         {
             isBeingSprayed = true;
-            Debug.Log($"[{name}] 💦 Water hit detected!");
         }
     }
 
@@ -86,7 +78,6 @@ public class FireController : MonoBehaviour
     {
         isExtinguished = true;
 
-        Debug.Log($"[{name}] ✅ FIRE EXTINGUISHED!");
 
         fireParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
