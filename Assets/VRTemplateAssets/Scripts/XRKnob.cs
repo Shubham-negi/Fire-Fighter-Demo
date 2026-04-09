@@ -12,6 +12,16 @@ namespace Unity.VRTemplate
     /// </summary>
     public class XRKnob : XRBaseInteractable
     {
+        public enum RotationAxis
+        {
+            X,
+            Y,
+            Z
+        }
+
+        [SerializeField]
+        [Tooltip("Axis around which the knob rotates")]
+        RotationAxis m_RotationAxis = RotationAxis.Y;
         const float k_ModeSwitchDeadZone = 0.1f; // Prevents rapid switching between the different rotation tracking modes
 
         /// <summary>
@@ -199,9 +209,12 @@ namespace Unity.VRTemplate
         /// Events to trigger when the knob is rotated
         /// </summary>
         public ValueChangeEvent onValueChange => m_OnValueChange;
-
+        Vector3 m_InitialLocalEuler;
         void Start()
         {
+            if (m_Handle != null)
+                m_InitialLocalEuler = m_Handle.localEulerAngles;
+
             SetValue(m_Value);
             SetKnobRotation(ValueToRotation());
         }
@@ -343,18 +356,35 @@ namespace Unity.VRTemplate
             SetValue(knobValue);
         }
 
-        void SetKnobRotation(float angle)
-        {
-            if (m_AngleIncrement > 0)
-            {
-                var normalizeAngle = angle - m_MinAngle;
-                angle = (Mathf.Round(normalizeAngle / m_AngleIncrement) * m_AngleIncrement) + m_MinAngle;
-            }
+       void SetKnobRotation(float angle)
+{
+    if (m_AngleIncrement > 0)
+    {
+        var normalizeAngle = angle - m_MinAngle;
+        angle = (Mathf.Round(normalizeAngle / m_AngleIncrement) * m_AngleIncrement) + m_MinAngle;
+    }
 
-            if (m_Handle != null)
-                m_Handle.localEulerAngles = new Vector3(0.0f, angle, 0.0f);
+    if (m_Handle != null)
+    {
+        // 🔥 IMPORTANT: Use CURRENT rotation, not initial
+        Vector3 currentEuler = m_Handle.localEulerAngles;
+
+        switch (m_RotationAxis)
+        {
+            case RotationAxis.X:
+                currentEuler.x = angle;
+                break;
+            case RotationAxis.Y:
+                currentEuler.y = angle;
+                break;
+            case RotationAxis.Z:
+                currentEuler.z = angle;
+                break;
         }
 
+        m_Handle.localEulerAngles = currentEuler;
+    }
+}
         void SetValue(float newValue)
         {
             if (m_ClampedMotion)

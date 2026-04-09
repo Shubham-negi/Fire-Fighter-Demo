@@ -126,7 +126,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color01: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 0}
-    - _Color2: {r: 0.41999996, g: 0.41999996, b: 0.41999996, a: 1}
+    - _Color2: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _InputNormal: {r: 0, g: 0, b: 1, a: 0}
     - _TriplanarTile: {r: 2, g: 2, b: 1, a: 0}

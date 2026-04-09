@@ -20,6 +20,7 @@ public class WaterSpray : MonoBehaviour
 
         if (fire != null)
         {
+            print($"💧 Hit fire: {other.name}");
             fire.SprayWater();
         }
         
