@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonitorRotateY : MonoBehaviour
 {
-    public Rigidbody monitorObj;
+    public Transform monitorObj;
 
     public HVRRotationTracker handle1ValveTracker;
     public HVRRotationLimiter handle1Limiter;
@@ -28,8 +28,7 @@ public class MonitorRotateY : MonoBehaviour
             MaxYAngle
         );
 
-        monitorObj.MoveRotation(
-            _startRotation * Quaternion.Euler(0f, yAngle, 0f)
-        );
+               monitorObj.localRotation = Quaternion.Euler(0f, yAngle, 0f);
+
     }
 }
