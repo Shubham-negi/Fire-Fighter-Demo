@@ -27,6 +27,9 @@ public float maxRotation = 0f;
     public float minStreamSpeed = 1f;
     public float maxStreamSpeed = 20f;
 
+    public float minStreamScale = 0.2f;
+public float maxStreamScale = 1.5f;
+
     // =========================
     // 🔹 DROPLETS
     // =========================
@@ -92,14 +95,27 @@ public float maxRotation = 0f;
     // 🔹 WATER STREAM (DIRECT)
     // =========================
     void UpdateWaterStream()
-    {
-        if (!waterStream) return;
+{
+    if (!waterStream) return;
+ var main = waterStream.main;
+        
 
-        float speed = Mathf.Lerp(minStreamSpeed, maxStreamSpeed, flowRate);
-
-        var main = waterStream.main;
+        // 🔹 Speed (direct)
+        float speed = Mathf.Lerp(minDropletSpeed, maxDropletSpeed, flowRate);
         main.startSpeed = speed;
-    }
+    // 🔹 Scale increases with flow
+    float scaleValue = Mathf.Lerp(minStreamScale, maxStreamScale, flowRate);
+
+    // 👉 Usually stream stretches in Z (forward axis)
+    Vector3 scale = waterStream.transform.localScale;
+    scale.z = scaleValue;
+
+    // Optional: also widen stream slightly
+    scale.x = scaleValue * 0.5f;
+    scale.y = scaleValue * 0.5f;
+
+    waterStream.transform.localScale = scale;
+}
 
     // =========================
     // 🔹 DROPLETS (ADVANCED BEHAVIOR)
