@@ -16,13 +16,7 @@ public class WaterSpray : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
 
-        FireController fire = other.GetComponent<FireController>();
-
-        if (fire != null)
-        {
-            print($"💧 Hit fire: {other.name}");
-            fire.SprayWater();
-        }
+       
         
     }
 }
