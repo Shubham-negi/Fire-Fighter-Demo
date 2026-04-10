@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Scene3Manager : MonoBehaviour
 {
-    public ParticleSystem[] particleSystems;
+    public ParticleSystem[] fireParticles;
     public Material foamMaterial;
 
     public GameObject waterSystem;
+
+     public GameObject foamSystem;
 
 
     /// <summary>
     /// WATER SYSTEM CONTROL 
     /// </summary>
 
-    public void StepCounter(int step)
+    public void waterStepCounter(int step)
     {
         if (step == 2)
         {
@@ -25,7 +27,18 @@ public class Scene3Manager : MonoBehaviour
             waterSystem.SetActive(false);
         }
     }
-
+    
+     public void FoamStepCounter(int step)
+    {
+        if (step == 2)
+        {
+            foamSystem.SetActive(true);
+        }
+        else
+        {
+            foamSystem.SetActive(false);
+        }
+    }
 
 
 
