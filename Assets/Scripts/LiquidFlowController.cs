@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LiquidFlowController : MonoBehaviour
@@ -17,7 +18,7 @@ public class LiquidFlowController : MonoBehaviour
     public float minZScale = 0.2f;  // high flow
     public float maxZScale = 1f;    // low flow
     public float minRotation = -50f;
-public float maxRotation = 0f;
+    public float maxRotation = 0f;
 
     // =========================
     // 🔹 WATER STREAM
@@ -28,7 +29,7 @@ public float maxRotation = 0f;
     public float maxStreamSpeed = 20f;
 
     public float minStreamScale = 0.2f;
-public float maxStreamScale = 1.5f;
+    public float maxStreamScale = 1.5f;
 
     // =========================
     // 🔹 DROPLETS
@@ -69,53 +70,53 @@ public float maxStreamScale = 1.5f;
     // 🔹 SPRINKLER SCALE (INVERSE)
     // =========================
     void UpdateSprinkler()
-{
-    if (!sprinkler) return;
-
-    // 🔹 If completely off → hide sprinkler
-    if (flowRate <= offThreshold)
     {
-        sprinkler.localScale = Vector3.zero;
-        return;
+        if (!sprinkler) return;
+
+        if (flowRate <= offThreshold)
+        {
+            sprinkler.localScale = Vector3.zero;
+            return;
+        }
+
+        // 🔹 Peak behavior (0 → 0.5 → 1 → 0)
+        float peak = 1f - Mathf.Abs(flowRate * 2f - 1f);
+
+        // 🔹 Apply scale using peak
+        float scaleValue = Mathf.Lerp(0f, maxZScale, peak);
+
+        sprinkler.localScale = new Vector3(scaleValue, scaleValue, scaleValue);
+
+        // 🔹 Rotation still linear (or you can also peak it if needed)
+        float rotation = Mathf.Lerp(minRotation, maxRotation, flowRate);
+        sprinkler.localRotation = Quaternion.Euler(rotation, 0f, 0f);
     }
-
-    // 🔹 Inverse scaling (flow ↑ → scale ↓)
-    float scaleValue = Mathf.Lerp(maxZScale, minZScale, flowRate);
-
-    sprinkler.localScale = new Vector3(scaleValue, scaleValue, scaleValue);
-
-    // 🔹 Rotation (flow ↑ → rotate from min → max)
-    float rotation = Mathf.Lerp(minRotation, maxRotation, flowRate);
-
-    // 👉 Rotate on X axis (change axis if needed)
-    sprinkler.localRotation = Quaternion.Euler(rotation, 0f, 0f);
-}
 
     // =========================
     // 🔹 WATER STREAM (DIRECT)
     // =========================
     void UpdateWaterStream()
-{
-    if (!waterStream) return;
- var main = waterStream.main;
-        
+    {
+        if (!waterStream) return;
+        var main = waterStream.main;
+
 
         // 🔹 Speed (direct)
         float speed = Mathf.Lerp(minDropletSpeed, maxDropletSpeed, flowRate);
         main.startSpeed = speed;
-    // 🔹 Scale increases with flow
-    float scaleValue = Mathf.Lerp(minStreamScale, maxStreamScale, flowRate);
+        // 🔹 Scale increases with flow
+        float scaleValue = Mathf.Lerp(minStreamScale, maxStreamScale, flowRate);
 
-    // 👉 Usually stream stretches in Z (forward axis)
-    Vector3 scale = waterStream.transform.localScale;
-    scale.z = scaleValue;
+        // 👉 Usually stream stretches in Z (forward axis)
+        Vector3 scale = waterStream.transform.localScale;
+        scale.z = scaleValue;
 
-    // Optional: also widen stream slightly
-    scale.x = scaleValue * 0.5f;
-    scale.y = scaleValue * 0.5f;
+        // Optional: also widen stream slightly
+        scale.x = scaleValue * 0.5f;
+        scale.y = scaleValue * 0.5f;
 
-    waterStream.transform.localScale = scale;
-}
+        waterStream.transform.localScale = scale;
+    }
 
     // =========================
     // 🔹 DROPLETS (ADVANCED BEHAVIOR)
@@ -183,4 +184,19 @@ public float maxStreamScale = 1.5f;
         if (droplets && !droplets.isPlaying)
             droplets.Play();
     }
+
+
+
+
+   public void AngleChangedHandler(float angle, float delta)
+{
+    // 🔹 Convert 360-like values back to 0
+    if (angle > 180f)
+        angle -= 360f;
+
+    // 🔹 Now clamp between 0 → 25
+    float normalized = Mathf.Clamp(angle, 0f, 25f);
+
+    flowRate = normalized / 25f;
+}
 }
