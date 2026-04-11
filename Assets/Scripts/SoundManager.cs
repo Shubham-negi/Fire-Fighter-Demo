@@ -4,7 +4,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
-    public AudioSource audioSource;
+    public AudioSource audioSource;     
     public AudioClip[] sounds; // assign in inspector
 
     void Awake()
