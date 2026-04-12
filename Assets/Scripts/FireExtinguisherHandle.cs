@@ -46,11 +46,13 @@ public class FireExtinguisherHandle : MonoBehaviour
     }
     public void SetKnobActive(float value)
     {
+        spray.gameObject.SetActive(true);
         knob = Mathf.Clamp01(value);
     }
 
      public void SetKnobDeactive(float value)
     {
         knob = Mathf.Clamp01(value);
+        spray.gameObject.SetActive(false);
     }
 }
