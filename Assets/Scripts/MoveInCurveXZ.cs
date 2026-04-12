@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class MoveInCurveXZ : MonoBehaviour
 {
-
+    public FireFighterSoundManager fireFighterSoundManager;
     public UnityEvent OnHitTargetDent;
 
     public GameObject m_fireParticle;
@@ -15,7 +15,7 @@ public class MoveInCurveXZ : MonoBehaviour
 
     private Vector3 startPos;
 
-    void Start()
+    public void Start()
     {
         startPos = transform.position;
     }
@@ -42,15 +42,15 @@ public class MoveInCurveXZ : MonoBehaviour
         transform.position = target.position;
         if (!isMovingBoll)
         {
-        SoundManager.Instance.PlaySound(3);
-        isMovingBoll = true;
+            fireFighterSoundManager.PlaySound(3);
+            isMovingBoll = true;
         }
         StartCoroutine(ChackAudioSourcePlayingfour());
     }
 
     private IEnumerator ChackAudioSourcePlayingfour()
     {
-        yield return new WaitWhile(() => SoundManager.Instance.audioSource.isPlaying);
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         OnHitTargetDent?.Invoke();
         if (m_fireParticle != null)
         {

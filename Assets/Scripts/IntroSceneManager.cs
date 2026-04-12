@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class IntroSceneManager : MonoBehaviour
 {
 
+public FireFighterSoundManager fireFighterSoundManager;
     public MoveInCurveXZ moveInCurveXZ;
 
     public HighlightEffect m_highlightEffectFireAlarm;
@@ -21,10 +22,10 @@ public class IntroSceneManager : MonoBehaviour
     [SerializeField] private GameObject m_startTrainingPanel;
     [SerializeField] private GameObject m_damagePanel;
 
-    void Start()
+    public void Start()
     {
-        SoundManager.Instance.PlaySound(0); // intro sound
-        ChackAudioSourcePlaying();
+       fireFighterSoundManager.PlaySound(0); // intro sound
+       ChackAudioSourcePlaying();
 
         m_startTrainingPanel.SetActive(true);
         m_damagePanel.SetActive(false);
@@ -34,22 +35,22 @@ public class IntroSceneManager : MonoBehaviour
     }
     private IEnumerator HandleStartTraining()
     {
-        yield return new WaitWhile(() => SoundManager.Instance.audioSource.isPlaying);
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         m_startTrainingButton.interactable = true;
     }
 
     private IEnumerator ChackAudioSourcePlayingSecond()
     {
-        yield return new WaitWhile(() => SoundManager.Instance.audioSource.isPlaying);
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         m_damagePanel.SetActive(true);
-        SoundManager.Instance.PlaySound(2);
-        yield return new WaitWhile(() => SoundManager.Instance.audioSource.isPlaying);
+        fireFighterSoundManager.PlaySound(1);
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         m_damageNextButton.interactable = true;
     }
 
     private void OnClickStartTrainingButton()
     {
-        SoundManager.Instance.PlaySound(1);
+        fireFighterSoundManager.PlaySound(2); // Start training sound
         m_startTrainingPanel.SetActive(false);
         StartCoroutine(ChackAudioSourcePlayingSecond());
     }
@@ -71,21 +72,21 @@ public class IntroSceneManager : MonoBehaviour
 
     public void ActiveMBPAlarm()
     {
-        SoundManager.Instance.PlaySound(4);
+        fireFighterSoundManager.PlaySound(4);
         m_highlightEffectFireAlarm.enabled = true;
         m_boxColliderGlass.enabled = true;  
     }
 
     private IEnumerator ChackAudioSourcePlayingFifth()
     {
-       // yield return new WaitWhile(() => SoundManager.Instance.audioSource.isPlaying);
+       // yield return new WaitWhile(() => FireFighterSoundManager.Instance.audioSource.isPlaying);
         yield return new WaitForSeconds(5f); // small delay to ensure sound starts
         SceneManager.LoadScene("Scene 1");
     }
 
      public void OnClickAlarmButton()
     {
-        SoundManager.Instance.PlaySound(5); 
+        fireFighterSoundManager.PlaySound(5);
          StartCoroutine(ChackAudioSourcePlayingFifth());
     }
 }
