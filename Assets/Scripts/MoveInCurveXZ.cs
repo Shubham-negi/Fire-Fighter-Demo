@@ -19,6 +19,7 @@ public class MoveInCurveXZ : MonoBehaviour
     {
         startPos = transform.position;
     }
+    [ContextMenu("Run My Function")]
 
     public void HitTargetDent()
     {
@@ -42,7 +43,7 @@ public class MoveInCurveXZ : MonoBehaviour
         transform.position = target.position;
         if (!isMovingBoll)
         {
-            fireFighterSoundManager.PlaySound(3);
+          //  fireFighterSoundManager.PlaySound(3);
             isMovingBoll = true;
         }
         StartCoroutine(ChackAudioSourcePlayingfour());

@@ -27,12 +27,14 @@ public class LiquidHitReceiver : MonoBehaviour
     private float foamGradient = 1f;
 
     [Header("Fire Control")]
-    public Scene3Manager sceneManager; // assign in inspector
+    public FireAndLightningManager fireAndLightningManager; // assign in inspector
     public float fireSlowFactor = 0.9f; // how much speed reduces each hit
 
     private Color hotColor = Color.red;
     private Color midColor = Color.green;
     private Color coolColor = Color.white;
+    public GameObject waterSystem;
+    public GameObject foamSystem;
 
     void Start()
     {
@@ -117,24 +119,31 @@ public class LiquidHitReceiver : MonoBehaviour
     // 🧯 Foam Logic
     // =========================
     void ApplyFoamEffect()
-{
-    // 🔹 Reduce foam gradient
-    if (foamMaterial != null)
     {
-        foamGradient -= foamReduceSpeed * Time.deltaTime;
-        foamGradient = Mathf.Clamp01(foamGradient);
-
-        foamMaterial.SetFloat(gradientProperty, foamGradient);
-    }
-
-    // 🔥 Reduce fire emission over time
-    if (sceneManager != null && sceneManager.fireParticles != null)
-    {
-        foreach (ParticleSystem ps in sceneManager.fireParticles)
+        // 🔹 Reduce foam gradient
+        if (foamMaterial != null)
         {
+            foamGradient -= foamReduceSpeed * Time.deltaTime;
+            foamGradient = Mathf.Clamp01(foamGradient);
+
+            foamMaterial.SetFloat(gradientProperty, foamGradient);
+        }
+
+        if (fireAndLightningManager == null)
+            return;
+
+        ParticleSystem[] fireParticles =
+            fireAndLightningManager.fireParticlesObject.GetComponentsInChildren<ParticleSystem>(true);
+
+        bool allFiresOff = true; // 🔥 TRACK GLOBAL STATE
+
+        foreach (ParticleSystem ps in fireParticles)
+        {
+            if (ps == null)
+                continue;
+
             var emission = ps.emission;
 
-            // Get current emission rate
             float currentRate = emission.rateOverTime.constant;
 
             // Reduce gradually
@@ -142,9 +151,14 @@ public class LiquidHitReceiver : MonoBehaviour
 
             emission.rateOverTime = newRate;
 
-            // When almost zero → stop fire completely
-            if (newRate <= 1f)
+            // 🔥 Check if still active
+            if (newRate > 1f)
             {
+                allFiresOff = false;
+            }
+            else
+            {
+                // Stop completely
                 emission.rateOverTime = 0f;
 
                 if (ps.isPlaying)
@@ -153,8 +167,16 @@ public class LiquidHitReceiver : MonoBehaviour
                 ps.gameObject.SetActive(false);
             }
         }
+
+        // ✅ AFTER LOOP → CHECK EVERYTHING
+        if (allFiresOff)
+        {
+            fireAndLightningManager.fireParticlesObject.SetActive(false);
+
+            // (Optional) Reset state machine
+            // fireAndLightningManager.ResetToIdle();
+        }
     }
-}
 
     // =========================
     // ✅ Final State
@@ -175,4 +197,62 @@ public class LiquidHitReceiver : MonoBehaviour
         if (highlight != null)
             highlight.enabled = false;
     }
+
+
+    /// <summary>
+    /// WATER SYSTEM CONTROL 
+    /// </summary>
+
+    public void waterStepCounter(int step)
+    {
+        if (step == 2)
+        {
+            waterSystem.SetActive(true);
+        }
+        else
+        {
+            waterSystem.SetActive(false);
+        }
+    }
+
+    public void FoamStepCounter(int step)
+    {
+        if (step == 2)
+        {
+            foamSystem.SetActive(true);
+        }
+        else
+        {
+            foamSystem.SetActive(false);
+        }
+    }
+void ResetFoam()
+{
+    foamGradient = 1f;
+
+    if (foamMaterial != null)
+    {
+        foamMaterial.SetFloat(gradientProperty, foamGradient);
+    }
+}
+
+void OnApplicationQuit()
+{
+    ResetFoam();
+}
+
+void OnDisable()
+{
+    ResetFoam();
+}
+
+
+    /// <summary>
+    /// WATER SYSTEM CONTROL 
+    /// </summary>
+    /// 
+    /// 
+    /// 
+
+
 }

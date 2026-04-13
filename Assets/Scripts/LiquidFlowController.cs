@@ -34,20 +34,7 @@ public class LiquidFlowController : MonoBehaviour
     // =========================
     // 🔹 DROPLETS
     // =========================
-    [Header("Droplets")]
-    public ParticleSystem droplets;
-
-    public float minDropletSpeed = 1f;
-    public float maxDropletSpeed = 20f;
-
-    public float minDropletSize = 0.1f; // high flow
-    public float maxDropletSize = 0.1f; // low flow (you kept same — adjustable)
-
-    public float minSpread = 10f;  // high flow
-    public float maxSpread = 25f;  // low flow
-
-    public float minEmission = 100f; // high flow
-    public float maxEmission = 300f; // low flow
+  
 
     void Update()
     {
@@ -63,7 +50,6 @@ public class LiquidFlowController : MonoBehaviour
 
         UpdateSprinkler();
         UpdateWaterStream();
-        UpdateDroplets();
     }
 
     // =========================
@@ -102,8 +88,6 @@ public class LiquidFlowController : MonoBehaviour
 
 
         // 🔹 Speed (direct)
-        float speed = Mathf.Lerp(minDropletSpeed, maxDropletSpeed, flowRate);
-        main.startSpeed = speed;
         // 🔹 Scale increases with flow
         float scaleValue = Mathf.Lerp(minStreamScale, maxStreamScale, flowRate);
 
@@ -121,38 +105,7 @@ public class LiquidFlowController : MonoBehaviour
     // =========================
     // 🔹 DROPLETS (ADVANCED BEHAVIOR)
     // =========================
-    void UpdateDroplets()
-    {
-        if (!droplets) return;
-
-        var main = droplets.main;
-        var emission = droplets.emission;
-        var shape = droplets.shape;
-
-        // 🔹 Speed (direct)
-        float speed = Mathf.Lerp(minDropletSpeed, maxDropletSpeed, flowRate);
-        main.startSpeed = speed;
-
-        // 🔹 Inverse behavior
-        float inverse = 1f - flowRate;
-
-        float size = Mathf.Lerp(minDropletSize, maxDropletSize, inverse);
-        float spread = Mathf.Lerp(minSpread, maxSpread, inverse);
-        float rate = Mathf.Lerp(minEmission, maxEmission, inverse);
-
-        // ✅ Size (X/Y)
-        main.startSizeX = size;
-        main.startSizeY = size;
-
-        // ✅ Spread (depends on particle shape)
-        shape.angle = spread;                 // for cone
-        shape.radius = spread * 0.01f;        // for sphere/circle
-
-        // ✅ Emission
-        var rateOverTime = emission.rateOverTime;
-        rateOverTime.constant = rate;
-        emission.rateOverTime = rateOverTime;
-    }
+   
 
     // =========================
     // 🔻 TURN OFF SYSTEM
@@ -162,8 +115,7 @@ public class LiquidFlowController : MonoBehaviour
         if (waterStream && waterStream.isPlaying)
             waterStream.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
-        if (droplets && droplets.isPlaying)
-            droplets.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+      
 
         // Reset sprinkler (closed state)
         // 🔹 Fully hide sprinkler when off
@@ -181,22 +133,24 @@ public class LiquidFlowController : MonoBehaviour
         if (waterStream && !waterStream.isPlaying)
             waterStream.Play();
 
-        if (droplets && !droplets.isPlaying)
-            droplets.Play();
+      
     }
 
 
 
 
-   public void AngleChangedHandler(float angle, float delta)
+ public void AngleChangedHandler(float angle, float delta)
 {
-    // 🔹 Convert 360-like values back to 0
+    print("Angle changed: " + angle + ", Delta: " + delta);
+
+    // 🔹 Convert 360-like values back to -180 → 180
     if (angle > 180f)
         angle -= 360f;
 
-    // 🔹 Now clamp between 0 → 25
+    // 🔹 Clamp between 0 → 25
     float normalized = Mathf.Clamp(angle, 0f, 25f);
 
-    flowRate = normalized / 25f;
+    // 🔹 Reverse mapping
+    flowRate = 1f - (normalized / 25f);
 }
 }

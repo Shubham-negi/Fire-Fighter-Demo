@@ -1,54 +1,95 @@
 using System.Collections;
-using System.Collections.Generic;
+using HighlightPlus;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Scene3Manager : MonoBehaviour
 {
-    public ParticleSystem[] fireParticles;
-    public Material foamMaterial;
 
-    public GameObject waterSystem;
+    public FireAndLightningManager fireAndLightningManager;
+    public FireFighterSoundManager fireFighterSoundManager;
 
-     public GameObject foamSystem;
+    public HighlightEffect m_highlightEffectFireAlarm;
+    public BoxCollider m_boxColliderGlass;
 
 
-    /// <summary>
-    /// WATER SYSTEM CONTROL 
-    /// </summary>
+    [Header("UI Buttons")]
+    [SerializeField] private Button m_startTrainingButton;
+    [SerializeField] private Button m_damageNextButton;
 
-    public void waterStepCounter(int step)
+    [Header("UI Panels")]
+    [SerializeField] private GameObject m_startTrainingPanel;
+    [SerializeField] private GameObject m_damagePanel;
+
+    public void Start()
     {
-        if (step == 2)
-        {
-            waterSystem.SetActive(true);
-        }
-        else
-        {
-            waterSystem.SetActive(false);
-        }
+        fireFighterSoundManager.PlaySound(0); // intro sound
+        ChackAudioSourcePlaying();
+
+        m_startTrainingPanel.SetActive(true);
+        m_damagePanel.SetActive(false);
+
+        m_startTrainingButton.onClick.AddListener(OnClickStartTrainingButton);
+        m_damageNextButton.onClick.AddListener(OnClickNextButton);
     }
-    
-     public void FoamStepCounter(int step)
+    private IEnumerator HandleStartTraining()
     {
-        if (step == 2)
-        {
-            foamSystem.SetActive(true);
-        }
-        else
-        {
-            foamSystem.SetActive(false);
-        }
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
+        m_startTrainingButton.interactable = true;
     }
 
+    private IEnumerator ChackAudioSourcePlayingSecond()
+    {
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
+        m_damagePanel.SetActive(true);
+        fireFighterSoundManager.PlaySound(1);
+        yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
+        m_damageNextButton.interactable = true;
+    }
+
+    private void OnClickStartTrainingButton()
+    {
+        fireFighterSoundManager.PlaySound(2); // Start training sound
+        m_startTrainingPanel.SetActive(false);
+        StartCoroutine(ChackAudioSourcePlayingSecond());
+    }
+
+    private void ChackAudioSourcePlaying()
+    {
+        StartCoroutine(HandleStartTraining());
+    }
 
 
-    /// <summary>
-    /// WATER SYSTEM CONTROL 
-    /// </summary>
-    /// 
-    /// 
-    /// 
 
+    private void OnClickNextButton()
+    {
+        m_damagePanel.SetActive(false);
+        fireAndLightningManager.StartFire();
 
+        Invoke("ActiveMBPAlarm", 15f); // Activate alarm after 15 seconds
+        // moveInCurveXZ.HitTargetDent();
+        // StartCoroutine(ChackAudioSourcePlayingThird());
 
+    }
+
+    public void ActiveMBPAlarm()
+    {
+        fireFighterSoundManager.PlaySound(4);
+        m_highlightEffectFireAlarm.enabled = true;
+        m_boxColliderGlass.enabled = true;
+    }
+
+    private IEnumerator ChackAudioSourcePlayingFifth()
+    {
+        // yield return new WaitWhile(() => FireFighterSoundManager.Instance.audioSource.isPlaying);
+        yield return new WaitForSeconds(5f); // small delay to ensure sound starts
+        SceneManager.LoadScene("Scene 1");
+    }
+
+    public void OnClickAlarmButton()
+    {
+        fireFighterSoundManager.PlaySound(5);
+        StartCoroutine(ChackAudioSourcePlayingFifth());
+    }
 }
