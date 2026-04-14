@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class IntroSceneManager : MonoBehaviour
 {
 
-public FireFighterSoundManager fireFighterSoundManager;
+public Scene3AudioManager fireFighterSoundManager;
     public MoveInCurveXZ moveInCurveXZ;
 
     public HighlightEffect m_highlightEffectFireAlarm;

@@ -8,7 +8,7 @@ public class Scene3Manager : MonoBehaviour
 {
 
     public FireAndLightningManager fireAndLightningManager;
-    public FireFighterSoundManager fireFighterSoundManager;
+    public Scene3AudioManager fireFighterSoundManager;
 
     public HighlightEffect m_highlightEffectFireAlarm;
     public BoxCollider m_boxColliderGlass;
@@ -53,6 +53,8 @@ public class Scene3Manager : MonoBehaviour
         fireFighterSoundManager.PlaySound(2); // Start training sound
         m_startTrainingPanel.SetActive(false);
         StartCoroutine(ChackAudioSourcePlayingSecond());
+
+
     }
 
     private void ChackAudioSourcePlaying()
@@ -83,13 +85,17 @@ public class Scene3Manager : MonoBehaviour
     private IEnumerator ChackAudioSourcePlayingFifth()
     {
         // yield return new WaitWhile(() => FireFighterSoundManager.Instance.audioSource.isPlaying);
+
+        fireFighterSoundManager.PlayPrepairForPPEKITVO();
         yield return new WaitForSeconds(5f); // small delay to ensure sound starts
-        SceneManager.LoadScene("Scene 1");
+       // SceneManager.LoadScene("Scene 1");
     }
 
     public void OnClickAlarmButton()
     {
         fireFighterSoundManager.PlaySound(5);
         StartCoroutine(ChackAudioSourcePlayingFifth());
+
+
     }
 }

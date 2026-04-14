@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement; // 👈 Important
 
 public class IntroManager : MonoBehaviour
 {
-    public FireFighterSoundManager fireFighterSoundManager;
+    public Scene3AudioManager fireFighterSoundManager;
     public HighlightObject fuleHighlightObject;
     public HighlightObject oxygenHighlightObject;
     public HighlightObject heatHighlightObject;

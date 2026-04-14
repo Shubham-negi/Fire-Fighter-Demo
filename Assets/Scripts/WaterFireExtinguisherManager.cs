@@ -10,7 +10,7 @@ public class WaterFireExtinguisherManager : MonoBehaviour
 
     public static WaterFireExtinguisherManager Instance;
 
-    public FireFighterSoundManager fireFighterSoundManager;
+    public Scene3AudioManager fireFighterSoundManager;
     public GameObject m_startPanel;
     public GameObject m_mashall;
     public GameObject m_oilBarrel;

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Scene1Manager : MonoBehaviour
 {
-    public FireFighterSoundManager fireFighterSoundManager;
+    public Scene3AudioManager fireFighterSoundManager;
     public int targetCount = 6;
     private int currentCount = 0;
     private bool isTriggered = false;

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class MoveInCurveXZ : MonoBehaviour
 {
-    public FireFighterSoundManager fireFighterSoundManager;
+    public Scene3AudioManager fireFighterSoundManager;
     public UnityEvent OnHitTargetDent;
 
     public GameObject m_fireParticle;
