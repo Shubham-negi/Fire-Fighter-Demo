@@ -2311,8 +2311,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.1769219, y: 0.24001002, z: 0.08460172}
-  m_Center: {x: -0.000000007450582, y: -0.000000055879354, z: 0.000000005587937}
+  m_Size: {x: 0.1769219, y: 0.24001002, z: 0.34794742}
+  m_Center: {x: -0.000000054756097, y: -0.000000059604645, z: 0.05406927}
 --- !u!54 &4071549658183753854
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4134,6 +4134,7 @@ GameObject:
   - component: {fileID: 4540195618011871975}
   - component: {fileID: 5241149842007010510}
   - component: {fileID: 2080616421500957218}
+  - component: {fileID: 8217359930584527757}
   m_Layer: 0
   m_Name: Mashal_01
   m_TagString: Untagged
@@ -4415,6 +4416,27 @@ MonoBehaviour:
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
+--- !u!65 &8217359930584527757
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4127395154905834159}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.34093776, y: 0.18437096, z: 0.2832346}
+  m_Center: {x: 0.0016784631, y: 0.003183864, z: 0.11566017}
 --- !u!1 &4251627412335327976
 GameObject:
   m_ObjectHideFlags: 0
@@ -5914,8 +5936,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25293446, y: 0.1153667, z: 0.055664897}
-  m_Center: {x: -0.0045655817, y: 0.115361094, z: -0.024658691}
+  m_Size: {x: 0.25293446, y: 0.1153667, z: 0.25223905}
+  m_Center: {x: -0.004565564, y: 0.115361094, z: 0.07362841}
 --- !u!54 &8736803973524061429
 Rigidbody:
   m_ObjectHideFlags: 0
