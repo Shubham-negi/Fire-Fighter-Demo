@@ -11,10 +11,26 @@ public class NPCData
     [HideInInspector] public AnimationState runState;
     [HideInInspector] public AnimationState idleState;
 
-    public List<Transform> waypoints = new List<Transform>();
+    // ✅ SINGLE DESTINATION
+    [Header("Destination")]
+    public Transform destination;
 
-    [HideInInspector] public int currentIndex = 0;
+    // 🔥 NOZZLE
+    [Header("Nozzle")]
+    public Transform nozzle;
+    public Vector3 minRotation;
+    public Vector3 maxRotation;
+    public float nozzleSpeed = 1f;
+
+    // 🔥 SINGLE LIQUID SOURCE
+    [Header("Liquid Source")]
+    public GameObject liquidSource;
+
+    // Runtime
     [HideInInspector] public bool isMoving = false;
+    [HideInInspector] public bool reached = false;
+
+    [HideInInspector] public float nozzleTime = 0f;
 }
 
 public class NpcManager : MonoBehaviour
@@ -27,23 +43,6 @@ public class NpcManager : MonoBehaviour
     public float rotationSpeed = 5f;
     public float reachDistance = 0.2f;
 
-    // 🔥 NOZZLES
-    [Header("Nozzles")]
-    public List<Transform> nozzles = new List<Transform>();
-
-    [Header("Nozzle Rotation")]
-    public Vector3 minRotation;
-    public Vector3 maxRotation;
-    public float nozzleSpeed = 1f;
-
-    private bool animateNozzles = false;
-    private float nozzleTime = 0f;
-
-    // 🔥 WATER + FOAM
-    [Header("Water & Foam Objects")]
-    public List<GameObject> waterObjects = new List<GameObject>();
-    public List<GameObject> foamObjects = new List<GameObject>();
-
     void Start()
     {
         foreach (var data in npcs)
@@ -55,73 +54,65 @@ public class NpcManager : MonoBehaviour
             int i = 0;
             foreach (AnimationState state in data.anim)
             {
-                if (i == 4) data.runState = state;   // run forward
-                if (i == 3) data.idleState = state;  // looking around
+                if (i == 4) data.runState = state;
+                if (i == 2) data.idleState = state;
                 i++;
             }
 
             data.anim.Stop();
+
+            // 🔹 Make sure liquid is OFF initially
+            if (data.liquidSource != null)
+                data.liquidSource.SetActive(false);
         }
     }
 
     void Update()
     {
-        // 🔹 NPC movement
         foreach (var data in npcs)
         {
-            if (data.isMoving && data.npc != null)
+            if (data.isMoving && !data.reached)
             {
                 MoveNPC(data);
             }
-        }
 
-        // 🔹 Nozzle animation
-        if (animateNozzles)
-        {
-            AnimateNozzles();
+            if (data.reached)
+            {
+                AnimateNozzle(data);
+            }
         }
     }
 
-    // 🔹 Call all NPCs
     [ContextMenu("Call ALL NPCs")]
     public void CallAllNpcs()
     {
-        for (int i = 0; i < npcs.Count; i++)
+        foreach (var data in npcs)
         {
-            CallNpc(i);
+            CallNpc(data);
         }
     }
 
-    public void CallNpc(int index)
+    void CallNpc(NPCData data)
     {
-        if (index < 0 || index >= npcs.Count) return;
+        if (data.npc == null || data.destination == null) return;
 
-        var data = npcs[index];
-
-        if (data.npc == null || data.waypoints.Count == 0) return;
-
-        data.currentIndex = 0;
         data.isMoving = true;
+        data.reached = false;
 
-        // ▶️ Run animation
         if (data.runState != null)
         {
             data.runState.wrapMode = WrapMode.Loop;
             data.anim.Play(data.runState.name);
         }
 
-        // Face first waypoint
-        Vector3 dir = (data.waypoints[0].position - data.npc.position).normalized;
+        Vector3 dir = (data.destination.position - data.npc.position).normalized;
         if (dir != Vector3.zero)
             data.npc.rotation = Quaternion.LookRotation(dir);
     }
 
     void MoveNPC(NPCData data)
     {
-        Transform target = data.waypoints[data.currentIndex];
-
-        // 🔹 Lock Y while moving
-        Vector3 targetPos = target.position;
+        Vector3 targetPos = data.destination.position;
         targetPos.y = data.npc.position.y;
 
         Vector3 direction = (targetPos - data.npc.position).normalized;
@@ -140,58 +131,37 @@ public class NpcManager : MonoBehaviour
 
         if (distance <= reachDistance)
         {
-            // ✅ Adjust only Y at destination
+            // ✅ Adjust only Y
             Vector3 pos = data.npc.position;
-            pos.y = target.position.y;
+            pos.y = data.destination.position.y;
             data.npc.position = pos;
 
-            data.currentIndex++;
+            data.isMoving = false;
+            data.reached = true;
 
-            if (data.currentIndex >= data.waypoints.Count)
+            // ▶️ Idle
+            if (data.idleState != null)
             {
-                data.isMoving = false;
-
-                // ▶️ Idle animation
-                if (data.idleState != null)
-                {
-                    data.idleState.wrapMode = WrapMode.Loop;
-                    data.anim.Play(data.idleState.name);
-                }
-
-                // 🔥 Start nozzle animation
-                animateNozzles = true;
-
-                // 🔥 Activate water
-                foreach (var water in waterObjects)
-                {
-                    if (water != null)
-                        water.SetActive(true);
-                }
-
-                // 🔥 Activate foam
-                foreach (var foam in foamObjects)
-                {
-                    if (foam != null)
-                        foam.SetActive(true);
-                }
+                data.idleState.wrapMode = WrapMode.Loop;
+                data.anim.Play(data.idleState.name);
             }
+
+            // 🔥 Activate liquid
+            if (data.liquidSource != null)
+                data.liquidSource.SetActive(true);
         }
     }
 
-    void AnimateNozzles()
+    void AnimateNozzle(NPCData data)
     {
-        nozzleTime += Time.deltaTime * nozzleSpeed;
+        if (data.nozzle == null) return;
 
-        float t = Mathf.PingPong(nozzleTime, 1f);
+        data.nozzleTime += Time.deltaTime * data.nozzleSpeed;
 
-        Vector3 rot = Vector3.Lerp(minRotation, maxRotation, t);
+        float t = Mathf.PingPong(data.nozzleTime, 1f);
 
-        foreach (var nozzle in nozzles)
-        {
-            if (nozzle != null)
-            {
-                nozzle.localRotation = Quaternion.Euler(rot);
-            }
-        }
+        Vector3 rot = Vector3.Lerp(data.minRotation, data.maxRotation, t);
+
+        data.nozzle.localRotation = Quaternion.Euler(rot);
     }
 }
