@@ -10,7 +10,7 @@ public class Scene3Manager : MonoBehaviour
 
 
     public FireAndLightningManager fireAndLightningManager;
-    public Scene3AudioManager fireFighterSoundManager;
+    public Scene3AudioManager1 fireFighterSoundManager;
 
     public HighlightEffect m_highlightEffectFireAlarm;
     public BoxCollider m_boxColliderGlass;

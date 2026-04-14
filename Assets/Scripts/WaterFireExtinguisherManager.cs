@@ -228,6 +228,6 @@ public class WaterFireExtinguisherManager : MonoBehaviour
         yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         fireFighterSoundManager.PlaySound(10);
         yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
-        SceneManager.LoadScene("Main Scene");
+        SceneManager.LoadScene("Scene 3");
     }
 }
