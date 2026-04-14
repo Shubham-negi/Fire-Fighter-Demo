@@ -1,8 +1,12 @@
 using UnityEngine;
 using HighlightPlus;
+using UnityEngine.Events;
 
 public class LiquidHitReceiver : MonoBehaviour
 {
+
+   public UnityEvent onFireCooledDown;
+
     [Header("Cooling Settings (Water)")]
     public float coolingSpeed = 1f;
     public float hitInterval = 0.3f;
@@ -38,6 +42,8 @@ public class LiquidHitReceiver : MonoBehaviour
 
     public GameObject waterSystem;
     public GameObject foamSystem;
+
+
 
     void Start()
     {
@@ -173,6 +179,9 @@ public class LiquidHitReceiver : MonoBehaviour
         if (allFiresOff)
         {
             fireAndLightningManager.fireParticlesObject.SetActive(false);
+            foamSystem.SetActive(false);
+            onFireCooledDown.Invoke();
+            
         }
     }
 
