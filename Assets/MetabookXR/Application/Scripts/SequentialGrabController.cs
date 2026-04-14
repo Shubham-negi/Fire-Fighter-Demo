@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using HurricaneVR.Framework.Core;
-using UnityEngine.SceneManagement;
 
 public class SequentialGrabController : MonoBehaviour
 {
@@ -82,10 +81,5 @@ public class SequentialGrabController : MonoBehaviour
         currentIndex = 0;
         currentGrabbableActive = false;
         DisableAllGrabbables();
-    }
-
-     public void LoadNextScene()
-    {
-       SceneManager.LoadScene("Scene 2");
     }
 }

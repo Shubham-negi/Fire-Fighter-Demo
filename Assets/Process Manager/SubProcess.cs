@@ -161,5 +161,8 @@ public class SubProcess : MonoBehaviour
     }
 
 
-   
+    public void LoadNextScene()
+    {
+       SceneManager.LoadScene("Scene 3");
+    }
 }
