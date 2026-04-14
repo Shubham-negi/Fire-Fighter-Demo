@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[ExecuteAlways]
 [RequireComponent(typeof(LineRenderer))]
 public class WaypointAnimatedPath : MonoBehaviour
 {
