@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
 public class DestinationPointTrigger : MonoBehaviour
@@ -6,9 +7,11 @@ public class DestinationPointTrigger : MonoBehaviour
     [Header("References")]
     public string playerTag = "Player";
 
+    [Header("Events")]
+    public UnityEvent onReachedDestination; // 🔹 assign in Inspector
+
     private void Reset()
     {
-        // Make sure collider is a trigger
         var col = GetComponent<Collider>();
         col.isTrigger = true;
     }
@@ -19,15 +22,14 @@ public class DestinationPointTrigger : MonoBehaviour
 
         if (!other.CompareTag(playerTag))
         {
-            Debug.Log($"[DestinationPointTrigger] Ignored � collider tag '{other.tag}' != playerTag '{playerTag}'");
+            Debug.Log($"Ignored collider tag '{other.tag}' != playerTag '{playerTag}'");
             return;
         }
 
-      
+        // 🔹 Invoke event
+        onReachedDestination?.Invoke();
 
-        // Tell subprocess to complete
-
-        // Disable this destination object (arrow + trigger turn off)
+        // 🔹 Disable object
         gameObject.SetActive(false);
     }
 }

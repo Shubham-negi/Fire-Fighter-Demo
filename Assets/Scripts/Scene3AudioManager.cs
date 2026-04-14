@@ -21,6 +21,8 @@ public class Scene3AudioManager : MonoBehaviour
     
     [Header("Voice Overs")]
     public AudioClip prepairPPEVO;
+
+    public AudioClip followThePathToGetReadyVO;
     public AudioClip ppeKitIsReadyVO;
     public AudioClip startTrainingVO;
     public AudioClip climbUpToWaterCanonVO;
@@ -85,5 +87,7 @@ public class Scene3AudioManager : MonoBehaviour
     // 🎤 Voice Overs
     // =========================
     public void PlayPrepairForPPEKITVO() => Play(prepairPPEVO);
+    public void FollowThePathToGetReadyVO() => Play(followThePathToGetReadyVO);
+    public void PPEKitIsReadyVO() => Play(ppeKitIsReadyVO);
 }
 

@@ -22,6 +22,16 @@ public class Scene3Manager : MonoBehaviour
     [SerializeField] private GameObject m_startTrainingPanel;
     [SerializeField] private GameObject m_damagePanel;
 
+
+    public GameObject ppeKit;
+
+    [Header("Destination Points")]
+    public GameObject reachPpeKitDestination;
+    public GameObject reachWaterCanonDestination;
+    public GameObject reachFoamCanonDestination;
+
+
+
     public void Start()
     {
         fireFighterSoundManager.PlaySound(0); // intro sound
@@ -88,6 +98,14 @@ public class Scene3Manager : MonoBehaviour
 
         fireFighterSoundManager.PlayPrepairForPPEKITVO();
         yield return new WaitForSeconds(5f); // small delay to ensure sound starts
+
+                fireFighterSoundManager.FollowThePathToGetReadyVO();
+
+                reachPpeKitDestination.SetActive(true);
+                ppeKit.SetActive(true); // Activate the PPE Kit
+
+                
+
        // SceneManager.LoadScene("Scene 1");
     }
 
