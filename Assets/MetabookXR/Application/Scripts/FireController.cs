@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
-[RequireComponent(typeof(ParticleSystem))]
-[RequireComponent(typeof(AudioSource))]
 public class FireController : MonoBehaviour
 {
     [System.Serializable]
@@ -35,8 +34,11 @@ public class FireController : MonoBehaviour
     public float minLifetime = 0.2f;
 
     [Header("Debug")]
-    public bool debugEnabled = false;
+    public bool debugEnabled = true;
     public string extinguisherTag = "ExtinguisherGas";
+
+    [Header("Event When Fire Fully Extinguished")]
+    public UnityEvent afterfireextinguished;
 
     private bool isExtinguishing = false;
     private bool isFullyExtinguished = false;
@@ -79,7 +81,6 @@ public class FireController : MonoBehaviour
 
             if (isExtinguishing)
             {
-                // 🔥 Reduce fire
                 fire.currentEmission -= extinguishSpeed * Time.deltaTime;
                 fire.currentEmission = Mathf.Max(fire.currentEmission, fire.minEmission);
             }
@@ -97,40 +98,47 @@ public class FireController : MonoBehaviour
             if (fire.fireLight)
                 fire.fireLight.intensity = Mathf.Lerp(0f, 2f, t);
 
-            // 🔴 FULLY EXTINGUISHED
+            // 🔴 INDIVIDUAL FIRE OFF
             if (fire.currentEmission <= extinguishThreshold)
             {
                 fire.currentEmission = 0;
                 fire.emissionModule.rateOverTime = 0;
 
-                // Stop effects
                 fire.fireParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
                 if (fire.fireAudio) fire.fireAudio.Stop();
                 if (fire.fireLight) fire.fireLight.intensity = 0;
+                afterfireextinguished?.Invoke();
 
-                // 🔴 Disable GameObject
+                // ✅ IMPORTANT: Disable fire object
                 fire.fireParticle.gameObject.SetActive(false);
+
+                if (debugEnabled)
+                    Debug.Log("🔥 One fire turned OFF");
             }
         }
 
-        // ✅ Check if ALL fires are extinguished
+        // ✅ CHECK IF ALL FIRE OBJECTS ARE DISABLED
         bool allOff = true;
         foreach (var fire in fires)
         {
-            if (fire.currentEmission > extinguishThreshold)
+            // We only care about fires that actually exist
+            if (fire.fireParticle != null)
             {
-                allOff = false;
-                break;
+                if (fire.currentEmission > 0)
+                {
+                    allOff = false;
+                    break;
+                }
             }
         }
 
-        if (allOff)
+        // 🔥 FINAL EVENT
+        if (allOff && !isFullyExtinguished && fires.Count > 0)
         {
             isFullyExtinguished = true;
-
-            if (debugEnabled)
-                Debug.Log("🔥 All fires permanently extinguished!");
+            Debug.Log("🔥 ALL FIRE EXTINGUISHED → EVENT CALLED");
+            
         }
     }
 

@@ -355,11 +355,6 @@ namespace HurricaneVR.Framework.Shared.Utilities
                 return new ArraySegment<T>(_buffer, 0, _end);
             }
         }
-
-        internal void Enqueue(object linearVelocity)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }
