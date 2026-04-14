@@ -27,12 +27,15 @@ public class LiquidHitReceiver : MonoBehaviour
     private float foamGradient = 1f;
 
     [Header("Fire Control")]
-    public FireAndLightningManager fireAndLightningManager; // assign in inspector
-    public float fireSlowFactor = 0.9f; // how much speed reduces each hit
+    public FireAndLightningManager fireAndLightningManager;
+
+    // 🔥 NEW — CONTROL FIRE SPEED HERE
+    public float reductionPerSecond = 30f; // 🔥 LOWER = SLOWER FIRE
 
     private Color hotColor = Color.red;
     private Color midColor = Color.green;
     private Color coolColor = Color.white;
+
     public GameObject waterSystem;
     public GameObject foamSystem;
 
@@ -73,11 +76,9 @@ public class LiquidHitReceiver : MonoBehaviour
             ApplyFoamEffect();
         }
 
-        // Reset flags
         isWaterHit = false;
         isFoamHit = false;
 
-        // Final cooling state
         if (coolingProgress >= 0.98f && !cooledDownTriggered)
         {
             cooledDownTriggered = true;
@@ -116,16 +117,15 @@ public class LiquidHitReceiver : MonoBehaviour
     }
 
     // =========================
-    // 🧯 Foam Logic
+    // 🧯 Foam Logic (FIXED)
     // =========================
     void ApplyFoamEffect()
     {
-        // 🔹 Reduce foam gradient
+        // 🔹 Foam visual reduce
         if (foamMaterial != null)
         {
             foamGradient -= foamReduceSpeed * Time.deltaTime;
             foamGradient = Mathf.Clamp01(foamGradient);
-
             foamMaterial.SetFloat(gradientProperty, foamGradient);
         }
 
@@ -135,7 +135,7 @@ public class LiquidHitReceiver : MonoBehaviour
         ParticleSystem[] fireParticles =
             fireAndLightningManager.fireParticlesObject.GetComponentsInChildren<ParticleSystem>(true);
 
-        bool allFiresOff = true; // 🔥 TRACK GLOBAL STATE
+        bool allFiresOff = true;
 
         foreach (ParticleSystem ps in fireParticles)
         {
@@ -143,38 +143,36 @@ public class LiquidHitReceiver : MonoBehaviour
                 continue;
 
             var emission = ps.emission;
-
             float currentRate = emission.rateOverTime.constant;
 
-            // Reduce gradually
-            float newRate = Mathf.Lerp(currentRate, 0f, Time.deltaTime * 1.5f);
+            // 🔥 NEW — SLOW LINEAR REDUCTION
+            // 🔥 Smooth slow reduction
+            float newRate = Mathf.Lerp(currentRate, 0f, Time.deltaTime * 0.3f);
+            newRate = Mathf.Max(newRate, 0f);
 
             emission.rateOverTime = newRate;
 
-            // 🔥 Check if still active
-            if (newRate > 1f)
+            // 🔥 DO NOT cut suddenly — let it fade naturally
+            if (newRate > 0.1f)
             {
                 allFiresOff = false;
             }
             else
             {
-                // Stop completely
+                // Stop emission ONLY (no sudden disable)
                 emission.rateOverTime = 0f;
 
                 if (ps.isPlaying)
                     ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
-                ps.gameObject.SetActive(false);
+                // ❌ IMPORTANT: REMOVE THIS LINE (if exists)
+                // ps.gameObject.SetActive(false);
             }
         }
 
-        // ✅ AFTER LOOP → CHECK EVERYTHING
         if (allFiresOff)
         {
             fireAndLightningManager.fireParticlesObject.SetActive(false);
-
-            // (Optional) Reset state machine
-            // fireAndLightningManager.ResetToIdle();
         }
     }
 
@@ -198,61 +196,36 @@ public class LiquidHitReceiver : MonoBehaviour
             highlight.enabled = false;
     }
 
-
-    /// <summary>
-    /// WATER SYSTEM CONTROL 
-    /// </summary>
-
+    // =========================
+    // 💧 WATER CONTROL
+    // =========================
     public void waterStepCounter(int step)
     {
-        if (step == 2)
-        {
-            waterSystem.SetActive(true);
-        }
-        else
-        {
-            waterSystem.SetActive(false);
-        }
+        waterSystem.SetActive(step == 2);
     }
 
     public void FoamStepCounter(int step)
     {
-        if (step == 2)
-        {
-            foamSystem.SetActive(true);
-        }
-        else
-        {
-            foamSystem.SetActive(false);
-        }
+        foamSystem.SetActive(step == 2);
     }
-void ResetFoam()
-{
-    foamGradient = 1f;
 
-    if (foamMaterial != null)
+    void ResetFoam()
     {
-        foamMaterial.SetFloat(gradientProperty, foamGradient);
+        foamGradient = 1f;
+
+        if (foamMaterial != null)
+        {
+            foamMaterial.SetFloat(gradientProperty, foamGradient);
+        }
     }
-}
 
-void OnApplicationQuit()
-{
-    ResetFoam();
-}
+    void OnApplicationQuit()
+    {
+        ResetFoam();
+    }
 
-void OnDisable()
-{
-    ResetFoam();
-}
-
-
-    /// <summary>
-    /// WATER SYSTEM CONTROL 
-    /// </summary>
-    /// 
-    /// 
-    /// 
-
-
+    void OnDisable()
+    {
+        ResetFoam();
+    }
 }
