@@ -24,11 +24,11 @@ public class Scene3AudioManager : MonoBehaviour
 
     public AudioClip followThePathToGetReadyVO;
     public AudioClip ppeKitIsReadyVO;
+    public AudioClip waerPPEKitVO;
     public AudioClip startTrainingVO;
-    public AudioClip climbUpToWaterCanonVO;
-    public AudioClip climbDownFromWaterCanonVO;
-    public AudioClip climbUpToFoamCanonVO;
-    public AudioClip climbDownFromFoamCanonVO;
+    public AudioClip waterMonitorGuideVO;
+    public AudioClip foamrMonitorGuideVO;
+
     void Awake()
     {
         // Singleton
@@ -89,5 +89,11 @@ public class Scene3AudioManager : MonoBehaviour
     public void PlayPrepairForPPEKITVO() => Play(prepairPPEVO);
     public void FollowThePathToGetReadyVO() => Play(followThePathToGetReadyVO);
     public void PPEKitIsReadyVO() => Play(ppeKitIsReadyVO);
+
+    public void WaerPPEKitVO() => Play(waerPPEKitVO);
+
+    public void WaterMonitorGuideVOPlay() => Play(waterMonitorGuideVO);
+        public void FoamMonitorGuideVOPlay() => Play(foamrMonitorGuideVO);
+
 }
 

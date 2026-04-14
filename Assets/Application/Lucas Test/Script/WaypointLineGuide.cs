@@ -29,7 +29,7 @@ public class WaypointLineGuide : MonoBehaviour
         line.alignment = LineAlignment.TransformZ;
 
         // Auto assign parent if not set
-        
+
     }
 
     void LateUpdate()
@@ -49,40 +49,71 @@ public class WaypointLineGuide : MonoBehaviour
 
     void DrawPath()
     {
-        int count = 1 + waypoints.Count + 1; // Player + waypoints + target
-        line.positionCount = count;
+        List<Vector3> rawPoints = new List<Vector3>();
 
-        int index = 0;
+        // 🔹 Player
+        Vector3 start = player.position;
+        start.y += heightOffset;
+        rawPoints.Add(start);
 
-        // 🔹 1. Player (START)
-        Vector3 p = player.position;
-        p.y += heightOffset;
-        line.SetPosition(index++, p);
-
-        // 🔹 2. Waypoints (MIDDLE)
-        for (int i = 0; i < waypoints.Count; i++)
+        // 🔹 Waypoints
+        foreach (var wp in waypoints)
         {
-            if (waypoints[i] == null) continue;
+            if (wp == null) continue;
 
-            Vector3 wp = waypoints[i].position;
-            wp.y += heightOffset;
-            line.SetPosition(index++, wp);
+            Vector3 p = wp.position;
+            p.y += heightOffset;
+            rawPoints.Add(p);
         }
 
-        // 🔹 3. Target (END)
-        Vector3 t = transform.position;
-        t.y += heightOffset;
-        line.SetPosition(index++, t);
+        // 🔹 Target
+        Vector3 end = transform.position;
+        end.y += heightOffset;
+        rawPoints.Add(end);
 
-        // Fix count if some waypoints were null
-        line.positionCount = index;
+        // 🔥 CURVED SMOOTHING (Catmull-Rom)
+        List<Vector3> smoothPoints = new List<Vector3>();
+
+        int resolution = 8; // increase = smoother
+
+        for (int i = 0; i < rawPoints.Count - 1; i++)
+        {
+            Vector3 p0 = i == 0 ? rawPoints[i] : rawPoints[i - 1];
+            Vector3 p1 = rawPoints[i];
+            Vector3 p2 = rawPoints[i + 1];
+            Vector3 p3 = (i + 2 < rawPoints.Count) ? rawPoints[i + 2] : p2;
+
+            for (int j = 0; j < resolution; j++)
+            {
+                float t = j / (float)resolution;
+
+                Vector3 point =
+                    0.5f * (
+                    (2f * p1) +
+                    (-p0 + p2) * t +
+                    (2f * p0 - 5f * p1 + 4f * p2 - p3) * t * t +
+                    (-p0 + 3f * p1 - 3f * p2 + p3) * t * t * t
+                    );
+
+                smoothPoints.Add(point);
+            }
+        }
+
+        // Add last point
+        smoothPoints.Add(rawPoints[rawPoints.Count - 1]);
+
+        line.positionCount = smoothPoints.Count;
+
+        for (int i = 0; i < smoothPoints.Count; i++)
+        {
+            line.SetPosition(i, smoothPoints[i]);
+        }
     }
-
     void Animate()
     {
         if (mat == null || line.positionCount == 0) return;
 
-        offset += Time.deltaTime * scrollSpeed;
+        offset -= Time.deltaTime * scrollSpeed;
         mat.SetFloat("_Offset", offset);
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class Scene3Manager : MonoBehaviour
 {
 
+
+
     public FireAndLightningManager fireAndLightningManager;
     public Scene3AudioManager fireFighterSoundManager;
 
@@ -26,9 +28,17 @@ public class Scene3Manager : MonoBehaviour
     public GameObject ppeKit;
 
     [Header("Destination Points")]
+    public GameObject mcpDestination;
+
     public GameObject reachPpeKitDestination;
+
+    [Header("Liquid objsects")]
     public GameObject reachWaterCanonDestination;
     public GameObject reachFoamCanonDestination;
+
+        [Header("ENV sounds")]
+        public GameObject AlarmCirenSound;
+
 
 
 
@@ -79,7 +89,8 @@ public class Scene3Manager : MonoBehaviour
         m_damagePanel.SetActive(false);
         fireAndLightningManager.StartFire();
 
-        Invoke("ActiveMBPAlarm", 15f); // Activate alarm after 15 seconds
+        Invoke("ActiveMBPAlarm", 20f); // Activate alarm after 15 seconds
+
         // moveInCurveXZ.HitTargetDent();
         // StartCoroutine(ChackAudioSourcePlayingThird());
 
@@ -90,28 +101,30 @@ public class Scene3Manager : MonoBehaviour
         fireFighterSoundManager.PlaySound(4);
         m_highlightEffectFireAlarm.enabled = true;
         m_boxColliderGlass.enabled = true;
+        mcpDestination.SetActive(true);
+
     }
 
     private IEnumerator ChackAudioSourcePlayingFifth()
     {
-        // yield return new WaitWhile(() => FireFighterSoundManager.Instance.audioSource.isPlaying);
+         yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
 
         fireFighterSoundManager.PlayPrepairForPPEKITVO();
         yield return new WaitForSeconds(5f); // small delay to ensure sound starts
 
-                fireFighterSoundManager.FollowThePathToGetReadyVO();
+        fireFighterSoundManager.FollowThePathToGetReadyVO();
 
-                reachPpeKitDestination.SetActive(true);
-                ppeKit.SetActive(true); // Activate the PPE Kit
+        reachPpeKitDestination.SetActive(true);
+        ppeKit.SetActive(true); // Activate the PPE Kit
 
-                
+        yield return new WaitForSeconds(4f); // small delay to ensure sound starts
 
-       // SceneManager.LoadScene("Scene 1");
+AlarmCirenSound.SetActive(true); // Activate the alarm siren sound
+        // SceneManager.LoadScene("Scene 1");
     }
 
     public void OnClickAlarmButton()
     {
-        fireFighterSoundManager.PlaySound(5);
         StartCoroutine(ChackAudioSourcePlayingFifth());
 
 
