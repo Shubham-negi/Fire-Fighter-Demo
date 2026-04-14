@@ -27,6 +27,23 @@ public class NpcManager : MonoBehaviour
     public float rotationSpeed = 5f;
     public float reachDistance = 0.2f;
 
+    // 🔥 NOZZLES
+    [Header("Nozzles")]
+    public List<Transform> nozzles = new List<Transform>();
+
+    [Header("Nozzle Rotation")]
+    public Vector3 minRotation;
+    public Vector3 maxRotation;
+    public float nozzleSpeed = 1f;
+
+    private bool animateNozzles = false;
+    private float nozzleTime = 0f;
+
+    // 🔥 WATER + FOAM
+    [Header("Water & Foam Objects")]
+    public List<GameObject> waterObjects = new List<GameObject>();
+    public List<GameObject> foamObjects = new List<GameObject>();
+
     void Start()
     {
         foreach (var data in npcs)
@@ -49,6 +66,7 @@ public class NpcManager : MonoBehaviour
 
     void Update()
     {
+        // 🔹 NPC movement
         foreach (var data in npcs)
         {
             if (data.isMoving && data.npc != null)
@@ -56,17 +74,25 @@ public class NpcManager : MonoBehaviour
                 MoveNPC(data);
             }
         }
+
+        // 🔹 Nozzle animation
+        if (animateNozzles)
+        {
+            AnimateNozzles();
+        }
     }
 
-    // 🔹 Call specific NPC
-[ContextMenu("Call ALL NPCs")]
-public void CallAllNpcs()
-{
-    for (int i = 0; i < npcs.Count; i++)
+    // 🔹 Call all NPCs
+    [ContextMenu("Call ALL NPCs")]
+    public void CallAllNpcs()
     {
-        CallNpc(i);
+        for (int i = 0; i < npcs.Count; i++)
+        {
+            CallNpc(i);
+        }
     }
-}    public void CallNpc(int index)
+
+    public void CallNpc(int index)
     {
         if (index < 0 || index >= npcs.Count) return;
 
@@ -77,7 +103,7 @@ public void CallAllNpcs()
         data.currentIndex = 0;
         data.isMoving = true;
 
-        // ▶️ Run Animation
+        // ▶️ Run animation
         if (data.runState != null)
         {
             data.runState.wrapMode = WrapMode.Loop;
@@ -94,15 +120,16 @@ public void CallAllNpcs()
     {
         Transform target = data.waypoints[data.currentIndex];
 
+        // 🔹 Lock Y while moving
         Vector3 targetPos = target.position;
         targetPos.y = data.npc.position.y;
 
         Vector3 direction = (targetPos - data.npc.position).normalized;
 
-        // Move
+        // 🔹 Move
         data.npc.position += direction * moveSpeed * Time.deltaTime;
 
-        // Rotate
+        // 🔹 Rotate
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -113,7 +140,7 @@ public void CallAllNpcs()
 
         if (distance <= reachDistance)
         {
-            // ✅ Adjust only Y
+            // ✅ Adjust only Y at destination
             Vector3 pos = data.npc.position;
             pos.y = target.position.y;
             data.npc.position = pos;
@@ -124,12 +151,46 @@ public void CallAllNpcs()
             {
                 data.isMoving = false;
 
-                // ▶️ Idle Animation
+                // ▶️ Idle animation
                 if (data.idleState != null)
                 {
                     data.idleState.wrapMode = WrapMode.Loop;
                     data.anim.Play(data.idleState.name);
                 }
+
+                // 🔥 Start nozzle animation
+                animateNozzles = true;
+
+                // 🔥 Activate water
+                foreach (var water in waterObjects)
+                {
+                    if (water != null)
+                        water.SetActive(true);
+                }
+
+                // 🔥 Activate foam
+                foreach (var foam in foamObjects)
+                {
+                    if (foam != null)
+                        foam.SetActive(true);
+                }
+            }
+        }
+    }
+
+    void AnimateNozzles()
+    {
+        nozzleTime += Time.deltaTime * nozzleSpeed;
+
+        float t = Mathf.PingPong(nozzleTime, 1f);
+
+        Vector3 rot = Vector3.Lerp(minRotation, maxRotation, t);
+
+        foreach (var nozzle in nozzles)
+        {
+            if (nozzle != null)
+            {
+                nozzle.localRotation = Quaternion.Euler(rot);
             }
         }
     }
