@@ -86,7 +86,7 @@ Material:
     - _ZTest: 2
     - _ZWrite: 0
     m_Colors:
-    - _Color01: {r: 0.75, g: 0.95392156, b: 1, a: 1}
+    - _Color01: {r: 0, g: 0.8156863, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _PanSpeed: {r: 0.0777, g: 2.69, b: 0, a: 0}
     - _PanSpeedDroplets: {r: -0.013, g: 1.777, b: 0, a: 0}
