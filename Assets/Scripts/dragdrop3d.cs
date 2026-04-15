@@ -17,7 +17,7 @@ public class dragdrop3d : MonoBehaviour
     public UnityEvent OnAllPlacementComplete; 
     [Header("HVR Events")]
     public UnityEvent HVRActive; 
-    private static int totalTargets = 7;
+    private static int totalTargets = 4;
     private static int placedCount = 0;
 
     private bool isPlaced = false;          
