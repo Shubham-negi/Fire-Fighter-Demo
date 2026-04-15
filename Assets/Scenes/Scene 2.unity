@@ -43025,6 +43025,8 @@ MonoBehaviour:
   m_oilBarrel: {fileID: 555015161}
   m_waterContainer: {fileID: 1541496628}
   m_fireExtinguisher: {fileID: 1709746912}
+  m_waterContainerArrow: {fileID: 1207064479}
+  m_fireExtinguisherArrow: {fileID: 1372926225}
   m_fireTriangleUIPanel: {fileID: 981947226}
   speed: 1
   m_drumWater: {fileID: 861514098}

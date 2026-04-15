@@ -17,6 +17,9 @@ public class WaterFireExtinguisherManager : MonoBehaviour
     public GameObject m_waterContainer;
     public GameObject m_fireExtinguisher;
 
+     public GameObject m_waterContainerArrow;
+    public GameObject m_fireExtinguisherArrow;
+
     public GameObject m_fireTriangleUIPanel;
     public float speed = 1f;
     public Transform m_drumWater;
@@ -107,6 +110,7 @@ public class WaterFireExtinguisherManager : MonoBehaviour
     {
         Debug.Log("did");
         m_waterContainer.GetComponent<HighlightEffect>().enabled = true;
+        m_waterContainerArrow.SetActive(true);
         fireFighterSoundManager.PlaySound(3);
     }
 
@@ -169,6 +173,7 @@ public class WaterFireExtinguisherManager : MonoBehaviour
     {
         m_fireTriangleUIPanel.SetActive(false);
         m_fireExtinguisher.GetComponent<HighlightEffect>().enabled = true;
+        m_fireExtinguisherArrow.SetActive(true);
         fireFighterSoundManager.PlaySound(6);
 
     }
