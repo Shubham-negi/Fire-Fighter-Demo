@@ -32,6 +32,11 @@ public AudioClip informFireFighterVO;
     public AudioClip vHFVO;
     public AudioClip vHFCliclk;
 
+    public AudioClip isolationValveVO;
+
+        public AudioClip tankCooledDownVO;
+
+
     void Awake()
     {
         // Singleton
@@ -101,5 +106,9 @@ public AudioClip informFireFighterVO;
     public void VHFClickPlay() => Play(vHFCliclk);
 
     public void InformFireFighterVO() => Play(informFireFighterVO);
+
+    public void IsolationValveVO() => Play(isolationValveVO);
+
+    public void TankCooledDownVO() => Play(tankCooledDownVO);
 }
 
