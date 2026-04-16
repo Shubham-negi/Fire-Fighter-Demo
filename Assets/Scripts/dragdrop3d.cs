@@ -60,6 +60,7 @@ public class dragdrop3d : MonoBehaviour
             {
                 Debug.Log("🎉 All cubes placed successfully!");
                 OnAllPlacementComplete?.Invoke();
+
             }
         }
     }

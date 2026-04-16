@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6543085203749065413}
   - component: {fileID: 3185283023823793176}
   - component: {fileID: 2254389599401598899}
-  - component: {fileID: 8512351576579062232}
   m_Layer: 0
   m_Name: Flames Big
   m_TagString: Untagged
@@ -4862,22 +4861,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3926668, y: 0.23160887, z: 1.4521912}
   m_Center: {x: 0.2800582, y: 0.24580446, z: 0.017895555}
---- !u!114 &8512351576579062232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685348695746210015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 6543085203749065413}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1 &4845840219813444242
 GameObject:
   m_ObjectHideFlags: 0
@@ -4890,7 +4873,6 @@ GameObject:
   - component: {fileID: 7286878473507881985}
   - component: {fileID: 8403911710199091159}
   - component: {fileID: 6262231190952475655}
-  - component: {fileID: 1715616615764490785}
   m_Layer: 0
   m_Name: Flames Big
   m_TagString: Untagged
@@ -9740,22 +9722,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1884081, y: 0.47839165, z: 1.4023987}
   m_Center: {x: 0.16246405, y: 0.2381792, z: 0.04135132}
---- !u!114 &1715616615764490785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4845840219813444242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 7286878473507881985}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1 &5496262252891214932
 GameObject:
   m_ObjectHideFlags: 0
@@ -9768,7 +9734,6 @@ GameObject:
   - component: {fileID: 3980699215082008799}
   - component: {fileID: 3908659033858400990}
   - component: {fileID: 7529322751546750910}
-  - component: {fileID: 4722645014330665187}
   m_Layer: 0
   m_Name: Flames Big
   m_TagString: Untagged
@@ -14618,22 +14583,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5333954, y: 0.2824092, z: 1.4420441}
   m_Center: {x: 0.092192076, y: 0.27120462, z: -0.012519789}
---- !u!114 &4722645014330665187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5496262252891214932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 3980699215082008799}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1 &5529443365775363524
 GameObject:
   m_ObjectHideFlags: 0
@@ -14663,16 +14612,16 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1802480767593487799}
   - {fileID: 5814972160096249059}
   - {fileID: 7385059274946165436}
-  - {fileID: 1802480767593487799}
-  - {fileID: 5403128853758632756}
   - {fileID: 4476761771593708519}
   - {fileID: 572991179796867396}
   - {fileID: 7905363088904993278}
   - {fileID: 5849742893759310109}
   - {fileID: 7743922616785184304}
   - {fileID: 1516289210518335360}
+  - {fileID: 5403128853758632756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7724261171264525379
@@ -14687,7 +14636,6 @@ GameObject:
   - component: {fileID: 5953437972503820503}
   - component: {fileID: 3842919855674832841}
   - component: {fileID: 2707753266839594138}
-  - component: {fileID: 7673717849849041475}
   m_Layer: 0
   m_Name: Flames Big
   m_TagString: Untagged
@@ -19537,22 +19485,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2519099, y: 0.23656873, z: 1.2072009}
   m_Center: {x: 0.16372405, y: 0.24828438, z: 0.10525584}
---- !u!114 &7673717849849041475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7724261171264525379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 5953437972503820503}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1 &8313351189202892835
 GameObject:
   m_ObjectHideFlags: 0
@@ -19565,7 +19497,6 @@ GameObject:
   - component: {fileID: 4018763289614394960}
   - component: {fileID: 8309738615946685273}
   - component: {fileID: 1159741853556204903}
-  - component: {fileID: 6851846666662174053}
   m_Layer: 0
   m_Name: Flames Big
   m_TagString: Untagged
@@ -24415,22 +24346,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.20052147, z: 1.314393}
   m_Center: {x: 0.08845709, y: 0.23026074, z: -0.00405262}
---- !u!114 &6851846666662174053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8313351189202892835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 4018763289614394960}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1 &8486802368163665340
 GameObject:
   m_ObjectHideFlags: 0
@@ -24443,7 +24358,6 @@ GameObject:
   - component: {fileID: 1081399612322691166}
   - component: {fileID: 8331234976742183053}
   - component: {fileID: 1278870311133106276}
-  - component: {fileID: 3499092970809174880}
   m_Layer: 0
   m_Name: Flames Big
   m_TagString: Untagged
@@ -29293,22 +29207,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3231713, y: 0.42095366, z: 1.3236612}
   m_Center: {x: 0.0819233, y: 0.34047684, z: -0.023337841}
---- !u!114 &3499092970809174880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8486802368163665340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 1081399612322691166}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1001 &15914611976354181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29412,18 +29310,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5803561156354514283, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6632201000464619626}
-    - targetCorrespondingSourceObject: {fileID: 5803561156354514283, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7079877570768195589}
   m_SourcePrefab: {fileID: 100100000, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
 --- !u!4 &5814972160096249059 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5803561156354514278, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
-  m_PrefabInstance: {fileID: 15914611976354181}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &5814972160096249068 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5803561156354514281, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
   m_PrefabInstance: {fileID: 15914611976354181}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5814972160096249070 stripped
@@ -29452,22 +29342,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.3055725, y: 4.715712, z: 0.07899056}
   m_Center: {x: 0.3375702, y: 0.28963995, z: 0.36949515}
---- !u!114 &7079877570768195589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5814972160096249070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 5814972160096249068}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1001 &2897031216261930136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29555,18 +29429,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3546549795153805602, guid: a01767e4cf6a4454980d03846a87fa9e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5659664625721267363}
-    - targetCorrespondingSourceObject: {fileID: 3546549795153805602, guid: a01767e4cf6a4454980d03846a87fa9e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8377167636455610556}
   m_SourcePrefab: {fileID: 100100000, guid: a01767e4cf6a4454980d03846a87fa9e, type: 3}
 --- !u!4 &1802480767593487799 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3546549795153805615, guid: a01767e4cf6a4454980d03846a87fa9e, type: 3}
-  m_PrefabInstance: {fileID: 2897031216261930136}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1802480767593487800 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3546549795153805600, guid: a01767e4cf6a4454980d03846a87fa9e, type: 3}
   m_PrefabInstance: {fileID: 2897031216261930136}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1802480767593487802 stripped
@@ -29595,22 +29461,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.91037, y: 4.264455, z: 0.8521153}
   m_Center: {x: 1.2395887, y: -2.548139, z: 0.16105765}
---- !u!114 &8377167636455610556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802480767593487802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 1802480767593487800}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
 --- !u!1001 &3960744726090131418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29714,9 +29564,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5803561156354514283, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2348799653660074092}
-    - targetCorrespondingSourceObject: {fileID: 5803561156354514283, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4209634114221256712}
   m_SourcePrefab: {fileID: 100100000, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
 --- !u!1 &7385059274946165425 stripped
 GameObject:
@@ -29744,27 +29591,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.9268646, y: 4.2741838, z: 0.07899056}
   m_Center: {x: -0.12949371, y: -0.0035846233, z: 0.36949515}
---- !u!114 &4209634114221256712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7385059274946165425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 7385059274946165427}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10
---- !u!198 &7385059274946165427 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5803561156354514281, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
-  m_PrefabInstance: {fileID: 3960744726090131418}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7385059274946165436 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5803561156354514278, guid: 1f52b73f09eab5745b9f1d6466d1b1e0, type: 3}
@@ -29845,18 +29671,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 225541255557624866, guid: b12b11ae8e59731498cb8f5ac9960a3a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4770516859148342062}
-    - targetCorrespondingSourceObject: {fileID: 225541255557624866, guid: b12b11ae8e59731498cb8f5ac9960a3a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6256394195895648917}
   m_SourcePrefab: {fileID: 100100000, guid: b12b11ae8e59731498cb8f5ac9960a3a, type: 3}
 --- !u!4 &5403128853758632756 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 225541255557624865, guid: b12b11ae8e59731498cb8f5ac9960a3a, type: 3}
-  m_PrefabInstance: {fileID: 5321721505355618069}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &5403128853758632757 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 225541255557624864, guid: b12b11ae8e59731498cb8f5ac9960a3a, type: 3}
   m_PrefabInstance: {fileID: 5321721505355618069}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &5403128853758632759 stripped
@@ -29885,19 +29703,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 13.051163, y: 21.881691, z: 2.6792243}
   m_Center: {x: -0.70957184, y: -1.3945627, z: -4.2696123}
---- !u!114 &6256394195895648917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403128853758632759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce114c166b55524fa4103bbcc4d441d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireParticles: {fileID: 5403128853758632757}
-  maxIntensity: 100
-  extinguishRate: 30
-  recoverRate: 10

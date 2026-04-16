@@ -3,18 +3,19 @@ using HighlightPlus;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using HurricaneVR.Framework.Core;
 
 public class Scene3Manager : MonoBehaviour
 {
 
-
-
+    Scene3Manager instance;
+    public GameObject[] taskListTicks;
     public FireAndLightningManager fireAndLightningManager;
     public Scene3AudioManager1 fireFighterSoundManager;
 
     public HighlightEffect m_highlightEffectFireAlarm;
     public BoxCollider m_boxColliderGlass;
-
+    public GameObject vHFObject;
 
     [Header("UI Buttons")]
     [SerializeField] private Button m_startTrainingButton;
@@ -36,14 +37,16 @@ public class Scene3Manager : MonoBehaviour
     public GameObject reachWaterCanonDestination;
     public GameObject reachFoamCanonDestination;
 
-        [Header("ENV sounds")]
-        public GameObject AlarmCirenSound;
+    [Header("ENV sounds")]
+    public GameObject AlarmCirenSound;
 
-
+    private bool alarmTriggered = false;
+    private bool vhfTriggered = false;
 
 
     public void Start()
     {
+        instance = this;
         fireFighterSoundManager.PlaySound(0); // intro sound
         ChackAudioSourcePlaying();
 
@@ -89,11 +92,10 @@ public class Scene3Manager : MonoBehaviour
         m_damagePanel.SetActive(false);
         fireAndLightningManager.StartFire();
 
-        Invoke("ActiveMBPAlarm", 20f); // Activate alarm after 15 seconds
 
         // moveInCurveXZ.HitTargetDent();
         // StartCoroutine(ChackAudioSourcePlayingThird());
-
+        Invoke(nameof(ActiveMBPAlarm), 15f); // Delay of 10 seconds before activating the MBP alarm
     }
 
     public void ActiveMBPAlarm()
@@ -105,28 +107,74 @@ public class Scene3Manager : MonoBehaviour
 
     }
 
-    private IEnumerator ChackAudioSourcePlayingFifth()
+
+    private IEnumerator VHFSoundAndAction()
     {
-         yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
+        fireFighterSoundManager.VHFClickPlay();
+        yield return new WaitForSeconds(1f); // small delay to ensure sound starts
+        fireFighterSoundManager.VHFVOPlay();
+        yield return new WaitForSeconds(15f); // small delay to ensure sound starts
 
         fireFighterSoundManager.PlayPrepairForPPEKITVO();
+
+
         yield return new WaitForSeconds(5f); // small delay to ensure sound starts
-
         fireFighterSoundManager.FollowThePathToGetReadyVO();
-
         reachPpeKitDestination.SetActive(true);
         ppeKit.SetActive(true); // Activate the PPE Kit
+                taskListTicks[1].SetActive(true); // Show tick for "Call the Alarm"
 
-        yield return new WaitForSeconds(4f); // small delay to ensure sound starts
-
-AlarmCirenSound.SetActive(true); // Activate the alarm siren sound
-        // SceneManager.LoadScene("Scene 1");
     }
 
     public void OnClickAlarmButton()
     {
-        StartCoroutine(ChackAudioSourcePlayingFifth());
+        if (alarmTriggered) return; // ⛔ already called once
 
+        alarmTriggered = true;
+        taskListTicks[0].SetActive(true); // Show tick for "Call the Alarm"
+
+        ActiveVHF();
+        AlarmCirenSound.SetActive(true);
+    }
+    public void OnVHFGrabAndTrigger()
+    {
+        if (vhfTriggered) return; // ⛔ already triggered
+
+        vhfTriggered = true;
+
+        StartCoroutine(VHFSoundAndAction());
+    }
+
+    public void ActiveVHF()
+    {
+        vHFObject.GetComponent<HighlightEffect>().enabled = true;
+        vHFObject.GetComponent<HVRGrabbable>().enabled = true;
+fireFighterSoundManager.InformFireFighterVO(); // Play the "Inform Fire Fighter" voice over
 
     }
+    // on active and press trigger of VHF, set the X position of all children to 0.42
+    public void PressVHFTriggerCall()
+    {
+        SetChildrenX(0.42f);
+    }
+
+    // Set X = 0.35
+    public void PressVHFTriggerCallEnd()
+    {
+        SetChildrenX(0.35f);
+    }
+
+    // 🔹 Core function
+    private void SetChildrenX(float xValue)
+    {
+
+        if (vHFObject == null || vHFObject.transform.childCount == 0) return;
+
+        Transform firstChild = vHFObject.transform.GetChild(0);
+
+        Vector3 pos = firstChild.localPosition;
+        pos.x = xValue;
+        firstChild.localPosition = pos;
+    }
+
 }

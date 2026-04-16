@@ -9,7 +9,7 @@ public class Scene3AudioManager1 : MonoBehaviour
     // public AudioClip[] sounds;
     public AudioClip[] sounds;
 
-  
+
 
     // ▶ Play sound by index
     public void PlaySound(int index)
@@ -18,7 +18,7 @@ public class Scene3AudioManager1 : MonoBehaviour
 
         m_audioSource.Play();
     }
-    
+
     [Header("Voice Overs")]
     public AudioClip prepairPPEVO;
 
@@ -28,6 +28,9 @@ public class Scene3AudioManager1 : MonoBehaviour
     public AudioClip startTrainingVO;
     public AudioClip waterMonitorGuideVO;
     public AudioClip foamrMonitorGuideVO;
+public AudioClip informFireFighterVO; 
+    public AudioClip vHFVO;
+    public AudioClip vHFCliclk;
 
     void Awake()
     {
@@ -93,7 +96,10 @@ public class Scene3AudioManager1 : MonoBehaviour
     public void WaerPPEKitVO() => Play(waerPPEKitVO);
 
     public void WaterMonitorGuideVOPlay() => Play(waterMonitorGuideVO);
-        public void FoamMonitorGuideVOPlay() => Play(foamrMonitorGuideVO);
+    public void FoamMonitorGuideVOPlay() => Play(foamrMonitorGuideVO);
+    public void VHFVOPlay() => Play(vHFVO);
+    public void VHFClickPlay() => Play(vHFCliclk);
 
+    public void InformFireFighterVO() => Play(informFireFighterVO);
 }
 

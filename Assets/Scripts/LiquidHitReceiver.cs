@@ -6,6 +6,8 @@ public class LiquidHitReceiver : MonoBehaviour
 {
 
    public UnityEvent onFireCooledDown;
+      public UnityEvent onTankCooledDown;
+
 
     [Header("Cooling Settings (Water)")]
     public float coolingSpeed = 1f;
@@ -196,6 +198,8 @@ public class LiquidHitReceiver : MonoBehaviour
         {
             highlight.SetHighlighted(false);
             Invoke(nameof(DisableHighlight), 0.5f);
+                        onTankCooledDown.Invoke();
+
         }
     }
 
