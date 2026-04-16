@@ -6,17 +6,33 @@ public class WaterSequentialActivatorManager : MonoBehaviour
     public float delayBetweenObjects = 0.1f;
     public ParticleSystem m_tankForm;
 
-    public Transform foamObject;  
+    public Transform foamObject;
     public float foamScaleSpeed = 0.05f;
 
     public Material m_tankMaterial;
+
+    private Material originalTankMaterial;
 
 
     public AudioSource m_WaterSoundActive;
     private bool IsWaterSoundActive;
 
-  
 
+    void Start()
+    {
+        if (m_tankMaterial != null)
+        {
+            originalTankMaterial = new Material(m_tankMaterial); // ✅ REAL COPY
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        if (m_tankMaterial != null && originalTankMaterial != null)
+        {
+            m_tankMaterial.CopyPropertiesFromMaterial(originalTankMaterial);
+        }
+    }
     public void WaterSequentialActivator()
     {
         StartCoroutine(ActivateSequentially());
@@ -33,7 +49,7 @@ public class WaterSequentialActivatorManager : MonoBehaviour
             {
                 GameObject subChild = child.GetChild(j).gameObject;
 
-                if (m_WaterSoundActive != null & !IsWaterSoundActive) 
+                if (m_WaterSoundActive != null & !IsWaterSoundActive)
                 {
                     m_WaterSoundActive.Play();
                     IsWaterSoundActive = true;
@@ -46,7 +62,7 @@ public class WaterSequentialActivatorManager : MonoBehaviour
         {
             if (m_tankMaterial != null)
             {
-        StartCoroutine(FadeTankMaterial(5f));
+                StartCoroutine(FadeTankMaterial(5f));
             }
 
             m_tankForm.gameObject.SetActive(true);
@@ -69,7 +85,7 @@ public class WaterSequentialActivatorManager : MonoBehaviour
     {
         float time = 0;
         Vector3 startScale = Vector3.zero;
-        Vector3 targetScale = new Vector3(1.37f, 1.37f, 1.37f); 
+        Vector3 targetScale = new Vector3(1.37f, 1.37f, 1.37f);
 
         foamObject.localScale = startScale;
 
@@ -86,37 +102,37 @@ public class WaterSequentialActivatorManager : MonoBehaviour
         m_tankForm.Stop();
         m_tankForm.gameObject.SetActive(false);
     }
-IEnumerator FadeTankMaterial(float duration)
-{
-    // Make Transparent (important full setup)
-    m_tankMaterial.SetFloat("_Surface", 1);
-    m_tankMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-    m_tankMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-    m_tankMaterial.SetInt("_ZWrite", 0);
-    m_tankMaterial.renderQueue = 3000;
-
-    yield return null;
-
-    // Fade
-    float time = 0f;
-
-    Color color = m_tankMaterial.color;
-    color.a = 1f;
-    m_tankMaterial.color = color;
-
-    while (time < duration)
+    IEnumerator FadeTankMaterial(float duration)
     {
-        time += Time.deltaTime;
-        float t = time / duration;
-
-        color.a = Mathf.Lerp(1f, 0f, t);
-        m_tankMaterial.color = color;
+        // Make Transparent (important full setup)
+        m_tankMaterial.SetFloat("_Surface", 1);
+        m_tankMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        m_tankMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        m_tankMaterial.SetInt("_ZWrite", 0);
+        m_tankMaterial.renderQueue = 3000;
 
         yield return null;
+
+        // Fade
+        float time = 0f;
+
+        Color color = m_tankMaterial.color;
+        color.a = 1f;
+        m_tankMaterial.color = color;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            color.a = Mathf.Lerp(1f, 0f, t);
+            m_tankMaterial.color = color;
+
+            yield return null;
+        }
+
+        color.a = 0f;
+        m_tankMaterial.color = color;
     }
 
-    color.a = 0f;
-    m_tankMaterial.color = color;
-}
-    
 }

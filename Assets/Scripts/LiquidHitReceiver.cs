@@ -5,8 +5,8 @@ using UnityEngine.Events;
 public class LiquidHitReceiver : MonoBehaviour
 {
 
-   public UnityEvent onFireCooledDown;
-      public UnityEvent onTankCooledDown;
+    public UnityEvent onFireCooledDown;
+    public UnityEvent onTankCooledDown;
 
 
     [Header("Cooling Settings (Water)")]
@@ -40,7 +40,6 @@ public class LiquidHitReceiver : MonoBehaviour
 
     private Color hotColor = Color.red;
     private Color midColor = Color.green;
-    private Color coolColor = Color.white;
 
     public GameObject waterSystem;
     public GameObject foamSystem;
@@ -113,12 +112,7 @@ public class LiquidHitReceiver : MonoBehaviour
     {
         if (highlight == null) return;
 
-        Color targetColor;
-
-        if (coolingProgress < 0.5f)
-            targetColor = Color.Lerp(hotColor, midColor, coolingProgress * 2f);
-        else
-            targetColor = Color.Lerp(midColor, coolColor, (coolingProgress - 0.5f) * 2f);
+        Color targetColor = Color.Lerp(hotColor, midColor, coolingProgress);
 
         highlight.overlayColor = Color.Lerp(highlight.overlayColor, targetColor, Time.deltaTime * 2f);
         highlight.innerGlowColor = Color.Lerp(highlight.innerGlowColor, targetColor, Time.deltaTime * 2f);
@@ -183,7 +177,7 @@ public class LiquidHitReceiver : MonoBehaviour
             fireAndLightningManager.fireParticlesObject.SetActive(false);
             foamSystem.SetActive(false);
             onFireCooledDown.Invoke();
-            
+
         }
     }
 
@@ -197,8 +191,8 @@ public class LiquidHitReceiver : MonoBehaviour
         if (highlight != null)
         {
             highlight.SetHighlighted(false);
-            Invoke(nameof(DisableHighlight), 0.5f);
-                        onTankCooledDown.Invoke();
+            Invoke(nameof(DisableHighlight), 2f);
+            
 
         }
     }
@@ -207,6 +201,7 @@ public class LiquidHitReceiver : MonoBehaviour
     {
         if (highlight != null)
             highlight.enabled = false;
+            onTankCooledDown.Invoke();
     }
 
     // =========================

@@ -4,6 +4,7 @@ using HighlightPlus;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using HurricaneVR.Framework.Core;
 
 public class WaterFireExtinguisherManager : MonoBehaviour
 {
@@ -50,6 +51,8 @@ public class WaterFireExtinguisherManager : MonoBehaviour
         m_startPanel.SetActive(true);
         m_startButton.onClick.AddListener(OnClickStartButton);
         m_nextButton.onClick.AddListener(OnClickNextButton);
+                m_mashall.GetComponent<HVRGrabbable>().enabled = false;
+
     }
 
     // Update is called once per frame
@@ -65,6 +68,7 @@ public class WaterFireExtinguisherManager : MonoBehaviour
         fireFighterSoundManager.PlaySound(0);
         yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         m_startButton.interactable = true;
+        m_mashall.GetComponent<HVRGrabbable>().enabled = true;
     }
 
     private void OnClickStartButton()
@@ -104,6 +108,8 @@ public class WaterFireExtinguisherManager : MonoBehaviour
         Debug.Log("AfterTouchMashallVoiceOverDelay");
         yield return new WaitWhile(() => fireFighterSoundManager.m_audioSource.isPlaying);
         PickWaterContainer();
+                m_mashall.GetComponent<HVRGrabbable>().enabled = false;
+
     }
 
     private void PickWaterContainer()
