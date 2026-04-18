@@ -3,14 +3,19 @@ using UnityEngine;
 public class FuelIgnition : MonoBehaviour
 {
     public ParticleSystem fireParticle;
+private bool hasTriggered = false;
+  private void OnTriggerEnter(Collider other)
+{
+    if (hasTriggered) return; // ⛔ already triggered
 
-    private void OnTriggerEnter(Collider other)
+    if (other.CompareTag("FlameWood"))
     {
-        if (other.CompareTag("FlameWood"))
-        {
-            fireParticle.gameObject.SetActive(true);
-            fireParticle.Play();
-            WaterFireExtinguisherManager.Instance.OilBarrelTouchMashall();
-        }
+        hasTriggered = true; // ✅ lock it
+
+        fireParticle.gameObject.SetActive(true);
+        fireParticle.Play();
+
+        WaterFireExtinguisherManager.Instance.OilBarrelTouchMashall();
     }
+}
 }
