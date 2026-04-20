@@ -33,6 +33,8 @@ public class WaterSequentialActivatorManager : MonoBehaviour
             m_tankMaterial.CopyPropertiesFromMaterial(originalTankMaterial);
         }
     }
+
+    [ContextMenu("Test Fade Only")]
     public void WaterSequentialActivator()
     {
         StartCoroutine(ActivateSequentially());
@@ -102,37 +104,31 @@ public class WaterSequentialActivatorManager : MonoBehaviour
         m_tankForm.Stop();
         m_tankForm.gameObject.SetActive(false);
     }
-    IEnumerator FadeTankMaterial(float duration)
+     
+public IEnumerator FadeTankMaterial(float duration)
+{
+    if (m_tankMaterial == null) yield break;
+
+    float time = 0f;
+
+    // Start visible → End invisible
+    float start = 0f;
+    float end = 1f;
+
+    while (time < duration)
     {
-        // Make Transparent (important full setup)
-        m_tankMaterial.SetFloat("_Surface", 1);
-        m_tankMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        m_tankMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        m_tankMaterial.SetInt("_ZWrite", 0);
-        m_tankMaterial.renderQueue = 3000;
+        time += Time.deltaTime;
+        float t = time / duration;
+
+        float cutoff = Mathf.Lerp(start, end, t);
+
+        // 🔥 This drives the fade
+        m_tankMaterial.SetFloat("_Cutoff", cutoff);
 
         yield return null;
-
-        // Fade
-        float time = 0f;
-
-        Color color = m_tankMaterial.color;
-        color.a = 1f;
-        m_tankMaterial.color = color;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-
-            color.a = Mathf.Lerp(1f, 0f, t);
-            m_tankMaterial.color = color;
-
-            yield return null;
-        }
-
-        color.a = 0f;
-        m_tankMaterial.color = color;
     }
+
+    m_tankMaterial.SetFloat("_Cutoff", end);
+}
 
 }
