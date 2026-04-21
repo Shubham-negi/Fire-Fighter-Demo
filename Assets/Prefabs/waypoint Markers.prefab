@@ -10065,7 +10065,7 @@ GameObject:
   - component: {fileID: 2843726334057567354}
   - component: {fileID: 8272948746773844047}
   m_Layer: 0
-  m_Name: MCP Pointer
+  m_Name: waypoint Markers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

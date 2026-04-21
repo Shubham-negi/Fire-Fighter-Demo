@@ -34,7 +34,6 @@ public class WaterSequentialActivatorManager : MonoBehaviour
         }
     }
 
-    [ContextMenu("Test Fade Only")]
     public void WaterSequentialActivator()
     {
         StartCoroutine(ActivateSequentially());
