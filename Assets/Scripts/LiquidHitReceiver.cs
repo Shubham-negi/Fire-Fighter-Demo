@@ -108,15 +108,34 @@ public class LiquidHitReceiver : MonoBehaviour
     // =========================
     // 🔥 Highlight Cooling
     // =========================
-    void UpdateHighlight()
-    {
-        if (highlight == null) return;
 
-        Color targetColor = Color.Lerp(hotColor, midColor, coolingProgress);
+    
+   void UpdateHighlight()
+{
+    if (highlight == null) return;
 
-        highlight.overlayColor = Color.Lerp(highlight.overlayColor, targetColor, Time.deltaTime * 2f);
-        highlight.innerGlowColor = Color.Lerp(highlight.innerGlowColor, targetColor, Time.deltaTime * 2f);
-    }
+    // Reduce red channel based on cooling progress
+    float redValue = Mathf.Lerp(1f, 0f, coolingProgress);
+
+    Color targetColor = new Color(
+        redValue,
+        highlight.overlayColor.g,
+        highlight.overlayColor.b,
+        highlight.overlayColor.a
+    );
+
+    highlight.overlayColor = Color.Lerp(
+        highlight.overlayColor,
+        targetColor,
+        Time.deltaTime * 2f
+    );
+
+    highlight.innerGlowColor = Color.Lerp(
+        highlight.innerGlowColor,
+        targetColor,
+        Time.deltaTime * 2f
+    );
+}
 
     // =========================
     // 🧯 Foam Logic (FIXED)

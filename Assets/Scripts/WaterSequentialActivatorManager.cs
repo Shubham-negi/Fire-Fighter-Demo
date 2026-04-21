@@ -111,24 +111,29 @@ public IEnumerator FadeTankMaterial(float duration)
 
     float time = 0f;
 
-    // Start visible → End invisible
-    float start = 0f;
-    float end = 1f;
+    Color startColor = m_tankMaterial.color;
+    float startAlpha = startColor.a;
+    float endAlpha = 0f; // fully transparent
 
     while (time < duration)
     {
         time += Time.deltaTime;
         float t = time / duration;
 
-        float cutoff = Mathf.Lerp(start, end, t);
+        float alpha = Mathf.Lerp(startAlpha, endAlpha, t);
 
-        // 🔥 This drives the fade
-        m_tankMaterial.SetFloat("_Cutoff", cutoff);
+        Color newColor = startColor;
+        newColor.a = alpha;
+
+        m_tankMaterial.color = newColor;
 
         yield return null;
     }
 
-    m_tankMaterial.SetFloat("_Cutoff", end);
+    // Ensure final state
+    Color finalColor = startColor;
+    finalColor.a = endAlpha;
+    m_tankMaterial.color = finalColor;
 }
 
 }

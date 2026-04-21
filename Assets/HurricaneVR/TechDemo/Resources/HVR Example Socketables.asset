@@ -16,7 +16,7 @@ MonoBehaviour:
   - Large Item
   - Small Item
   - Holster
-  - 
+  - VHF
   - 
   - 
   - 
@@ -45,3 +45,4 @@ MonoBehaviour:
   - SMG Magazine
   - Pistol Magazine
   - Shotgun Shell
+  Identifier: HVR Example Socketables
