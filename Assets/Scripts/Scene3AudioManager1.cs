@@ -25,7 +25,7 @@ public class Scene3AudioManager1 : MonoBehaviour
     public AudioClip followThePathToGetReadyVO;
     public AudioClip ppeKitIsReadyVO;
     public AudioClip waerPPEKitVO;
-    public AudioClip startTrainingVO;
+    public AudioClip moveToWaterMonitorVO;
     public AudioClip waterMonitorGuideVO;
     public AudioClip foamrMonitorGuideVO;
 public AudioClip informFireFighterVO; 
@@ -110,5 +110,7 @@ public AudioClip informFireFighterVO;
     public void IsolationValveVO() => Play(isolationValveVO);
 
     public void TankCooledDownVO() => Play(tankCooledDownVO);
+
+    public void MoveToWaterMonitorVO()=>Play(moveToWaterMonitorVO);
 }
 
