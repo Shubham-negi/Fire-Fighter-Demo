@@ -15,15 +15,15 @@ public class HVRTriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Entered by: " + other.name);
+        Debug.Log("Entered by: " + other.tag);
 
         // ✅ Check root object (works for hands, body, etc.)
-        if (other.transform.root.CompareTag(playerTag))
+        if (other.transform.CompareTag(playerTag))
         {
             if (triggerOnce && hasTriggered) return;
 
             hasTriggered = true;
-
+        gameObject.SetActive(false);
             Debug.Log("✅ Player Entered Trigger");
             OnPlayerEnter?.Invoke();
         }
